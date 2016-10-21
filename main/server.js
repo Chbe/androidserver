@@ -28,9 +28,9 @@ $(function() {
   function addParticipantsMessage (data) {
     var message = '';
     if (data.numUsers === 1) {
-      message += "there's 1 participant";
+      message += "1 user is online";
     } else {
-      message += "there are " + data.numUsers + " participants";
+      message += data.numUsers + " users are online";
     }
     log(message);
   }
