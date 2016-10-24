@@ -17,6 +17,14 @@ var numUsers = 0;
 
 io.on('connection', function (socket) {
   var addedUser = false;
+  
+   socket.on('latitude', function (data) {
+    socket.latitude = data;
+  });
+  
+  socket.on('longitude', function (data) {
+    socket.longitude = data;
+  });
 
   // when the client emits 'new message', this listens and executes
   socket.on('new message', function (data) {
@@ -71,10 +79,5 @@ io.on('connection', function (socket) {
         numUsers: numUsers
       });
     }
-  });
-  
-  socket.on('location', function (location) {
-    socket.loc = location;
-    //io.sockets.emit('location', location);
   });
 });
