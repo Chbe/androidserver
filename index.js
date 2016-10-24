@@ -23,7 +23,8 @@ io.on('connection', function (socket) {
     // we tell the client to execute 'new message'
     socket.broadcast.emit('new message', {
       username: socket.username,
-      message: data
+      message: data,
+      location: socket.loc
     });
   });
 
@@ -70,5 +71,10 @@ io.on('connection', function (socket) {
         numUsers: numUsers
       });
     }
+  });
+  
+  socket.on('location', function (location) {
+    socket.loc = location;
+    //io.sockets.emit('location', location);
   });
 });
