@@ -24,20 +24,16 @@
       </div>
     </li>
   </ul>
-  <p class="latitude"></p>
-  <p class="longitude"></p>
+  <p id="latitude"></p>
+  <p id="longitude"></p>
   <p id="error"></p>
 
 
 
-<!--<p>Click the button to get your coordinates.</p>
-
-<button onclick="getLocation()">Try It</button>-->
-
-<!--<p id="demo"></p>-->
-
 <script>
 var x = document.getElementById("error");
+var lati = document.getElementById("latitude");
+var longi = document.getElementById("longitude");
 
 function getLocation() {
     if (navigator.geolocation) {
@@ -48,8 +44,10 @@ function getLocation() {
 }
 
 function showPosition(position) {
-    x.innerHTML = "Latitude: " + position.coords.latitude +
-    "<br>Longitude: " + position.coords.longitude;
+    lati.innerHTML = "Latitude: " + position.coords.latitude;
+    longi.innerHTML = "Longitude: " + position.coords.longitude;
+    
+    
 }
 
 function showError(error) {
