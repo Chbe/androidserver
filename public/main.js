@@ -74,7 +74,12 @@ $(function() {
 
       });
       // tell server to execute 'new message' and send along one parameter
-      socket.emit('new message', {username: username, message: message, longitude: longitude, latitude: latitude});
+      socket.emit('new message', {
+        username: username,
+        message: message,
+        longitude: longitude,
+        latitude: latitude
+      });
     }
   }
 
@@ -94,19 +99,19 @@ $(function() {
       $typingMessages.remove();
     }
 
-    /*var lat1 = parseFloat($latitude.text());
+    var lat1 = parseFloat($latitude.text());
     var lon1 = parseFloat($longitude.text());
     var lat2 = parseFloat(data.latitude);
-    var lon2 = parseFloat(data.longitude);*/
+    var lon2 = parseFloat(data.longitude);
 
-    /*var distans = distance(lat1, lon1, lat2, lon2);*/
+    var round = Math.round(distance(lat1, lon1, lat2, lon2) * 10) / 10;
 
     /*if (distans <= 1000) {*/
     var $usernameDiv = $('<span class="username"/>')
       .text(data.username + " ")
       .css('color', getUsernameColor(data.username));
     var $messageBodyDiv = $('<span class="messageBody">')
-      .text(data.message + " " + data.latitude + " " + data.longitude);
+      .text(data.message + " " + " " + round + "m away");
 
     var typingClass = data.typing ? 'typing' : '';
     var $messageDiv = $('<li class="message"/>')
@@ -117,26 +122,23 @@ $(function() {
     addMessageElement($messageDiv, options);
   }
 
-  /*function distance(lat1, lat2, lon1, lon2) {
-    var R = 6371, // km
-      dLat = (lat2 - lat1).toRad(),
-      dLon = (lon2 - lon1).toRad();
+  function distance(lat1, lon1, lat2, lon2) {
+    var deg2rad = 0.017453292519943295; // === Math.PI / 180
+    var cos = Math.cos;
+    lat1 *= deg2rad;
+    lon1 *= deg2rad;
+    lat2 *= deg2rad;
+    lon2 *= deg2rad;
+    var diam = 12742000; // Diameter of the earth in km (2 * 6371)
+    var dLat = lat2 - lat1;
+    var dLon = lon2 - lon1;
+    var a = (
+      (1 - cos(dLat)) +
+      (1 - cos(dLon)) * cos(lat1) * cos(lat2)
+    ) / 2;
 
-    lat1 = parseFloat(lat1).toRad();
-    lat2 = parseFloat(lat2).toRad();
-
-    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.sin(dLon / 2) * Math.sin(dLon / 2) *
-      Math.cos(lat1) * Math.cos(lat2),
-      c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)),
-      d = R * c;
-    var km = (Math.floor(d * 100) / 100);
-    return km;
+    return diam * Math.asin(Math.sqrt(a));
   }
-
-  Number.prototype.toRad = function() {
-    return this * Math.PI / 180;
-  };*/
 
   // Adds the visual chat typing message
   function addChatTyping(data) {
