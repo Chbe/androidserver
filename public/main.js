@@ -16,11 +16,9 @@ $(function() {
   var $loginPage = $('.login.page'); // The login page
   var $chatPage = $('.chat.page'); // The chatroom page
 
-  var $longitude = $('#longitude');
-  var $latitude = $('#latitude');
+  var $longitude = $('#lon');
+  var $latitude = $('#lat');
 
-  var latitude;
-  var longitude;
 
   // Prompt for setting a username
   var username;
@@ -58,16 +56,11 @@ $(function() {
     }
   }
 
-  /*function setCoordinations () {
-    longitude = $longitude.text();
-    latitude = $latitude.text();
-    
-    socket.emit('coordinates', latitude, longitude);
-  }*/
-
   // Sends a chat message
   function sendMessage() {
     var message = $inputMessage.val();
+    var longitude = $longitude.text();
+    var latitude = $latitude.text();
     // Prevent markup from being injected into the message
     message = cleanInput(message);
     // if there is a non-empty message and a socket connection
@@ -76,12 +69,12 @@ $(function() {
       addChatMessage({
         username: username,
         message: message,
-        longitude: $longitude.text(),
-        latitude: $latitude.text()
+        longitude: longitude,
+        latitude: latitude
 
       });
       // tell server to execute 'new message' and send along one parameter
-      socket.emit('new message', message);
+      socket.emit('new message', {username: username, message: message, longitude: longitude, latitude: latitude});
     }
   }
 
@@ -101,47 +94,49 @@ $(function() {
       $typingMessages.remove();
     }
 
-    var lat1 = parseFloat($latitude.text());
+    /*var lat1 = parseFloat($latitude.text());
     var lon1 = parseFloat($longitude.text());
     var lat2 = parseFloat(data.latitude);
-    var lon2 = parseFloat(data.longitude);
+    var lon2 = parseFloat(data.longitude);*/
 
-    var distans = distance(lat1, lon1, lat2, lon2);
+    /*var distans = distance(lat1, lon1, lat2, lon2);*/
 
-    if (distans <= 1000) {
-      var $usernameDiv = $('<span class="username"/>')
-        .text(data.username)
-        .css('color', getUsernameColor(data.username));
-      var $messageBodyDiv = $('<span class="messageBody">')
-        .text(data.message + " " + distans +"m away");
+    /*if (distans <= 1000) {*/
+    var $usernameDiv = $('<span class="username"/>')
+      .text(data.username + " ")
+      .css('color', getUsernameColor(data.username));
+    var $messageBodyDiv = $('<span class="messageBody">')
+      .text(data.message + " " + data.latitude + " " + data.longitude);
 
-      var typingClass = data.typing ? 'typing' : '';
-      var $messageDiv = $('<li class="message"/>')
-        .data('username', data.username)
-        .addClass(typingClass)
-        .append($usernameDiv, $messageBodyDiv);
+    var typingClass = data.typing ? 'typing' : '';
+    var $messageDiv = $('<li class="message"/>')
+      .data('username', data.username)
+      .addClass(typingClass)
+      .append($usernameDiv, $messageBodyDiv);
 
-      addMessageElement($messageDiv, options);
-    }
+    addMessageElement($messageDiv, options);
   }
 
-  function distance(lat1, lon1, lat2, lon2) {
-    var deg2rad = 0.017453292519943295; // === Math.PI / 180
-    var cos = Math.cos;
-    lat1 *= deg2rad;
-    lon1 *= deg2rad;
-    lat2 *= deg2rad;
-    lon2 *= deg2rad;
-    var diam = 12742; // Diameter of the earth in km (2 * 6371)
-    var dLat = lat2 - lat1;
-    var dLon = lon2 - lon1;
-    var a = (
-      (1 - cos(dLat)) +
-      (1 - cos(dLon)) * cos(lat1) * cos(lat2)
-    ) / 2;
+  /*function distance(lat1, lat2, lon1, lon2) {
+    var R = 6371, // km
+      dLat = (lat2 - lat1).toRad(),
+      dLon = (lon2 - lon1).toRad();
 
-    return diam * Math.asin(Math.sqrt(a));
+    lat1 = parseFloat(lat1).toRad();
+    lat2 = parseFloat(lat2).toRad();
+
+    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.sin(dLon / 2) * Math.sin(dLon / 2) *
+      Math.cos(lat1) * Math.cos(lat2),
+      c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)),
+      d = R * c;
+    var km = (Math.floor(d * 100) / 100);
+    return km;
   }
+
+  Number.prototype.toRad = function() {
+    return this * Math.PI / 180;
+  };*/
 
   // Adds the visual chat typing message
   function addChatTyping(data) {
