@@ -2,6 +2,6 @@ git add .
 
 git status
 
-git commit -m 'testar android server'
+git commit -m 'get locations'
 
 git push origin master

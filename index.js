@@ -1,15 +1,16 @@
+// Setup basic express server
 var express = require('express');
 var app = express();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
 var port = process.env.PORT || 3000;
 
-http.listen(port, function () {
-  console.log('Server listening at port', port);
+server.listen(port, function () {
+  console.log('Server listening at port %d', port);
 });
 
 // Routing
-app.use(express.static(__dirname + '/main'));
+app.use(express.static(__dirname + '/public'));
 
 // Chatroom
 
@@ -17,22 +18,13 @@ var numUsers = 0;
 
 io.on('connection', function (socket) {
   var addedUser = false;
-  
-   socket.on('latitude', function (data) {
-    socket.latitude = data;
-  });
-  
-  socket.on('longitude', function (data) {
-    socket.longitude = data;
-  });
 
   // when the client emits 'new message', this listens and executes
   socket.on('new message', function (data) {
     // we tell the client to execute 'new message'
     socket.broadcast.emit('new message', {
       username: socket.username,
-      message: data,
-      location: socket.loc
+      message: data
     });
   });
 
