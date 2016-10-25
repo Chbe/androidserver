@@ -106,20 +106,21 @@ $(function() {
 
     var round = Math.round(distance(lat1, lon1, lat2, lon2) * 10) / 10;
 
-    /*if (distans <= 1000) {*/
-    var $usernameDiv = $('<span class="username"/>')
-      .text(data.username + " ")
-      .css('color', getUsernameColor(data.username));
-    var $messageBodyDiv = $('<span class="messageBody">')
-      .text(data.message + " " + " " + round + "m away");
+    if (parseFloat(round) < 1000.1) {
+      var $usernameDiv = $('<span class="username"/>')
+        .text(data.username + " ")
+        .css('color', getUsernameColor(data.username));
+      var $messageBodyDiv = $('<span class="messageBody">')
+        .text(data.message + " " + " " + round + "m away");
 
-    var typingClass = data.typing ? 'typing' : '';
-    var $messageDiv = $('<li class="message"/>')
-      .data('username', data.username)
-      .addClass(typingClass)
-      .append($usernameDiv, $messageBodyDiv);
+      var typingClass = data.typing ? 'typing' : '';
+      var $messageDiv = $('<li class="message"/>')
+        .data('username', data.username)
+        .addClass(typingClass)
+        .append($usernameDiv, $messageBodyDiv);
 
-    addMessageElement($messageDiv, options);
+      addMessageElement($messageDiv, options);
+    }
   }
 
   function distance(lat1, lon1, lat2, lon2) {
