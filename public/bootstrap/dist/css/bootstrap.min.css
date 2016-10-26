@@ -12,10 +12,10 @@ html {
 html,
 input {
     font-family: "Open Sans";
-	font-size: 14px;
-	font-style: normal;
-	font-variant: normal;
-    }
+    font-size: 14px;
+    font-style: normal;
+    font-variant: normal;
+}
 
 html,
 body {
@@ -125,6 +125,17 @@ ul {
     float: left;
 }
 
+.logMessages {
+    color: gray;
+    text-align: center;
+    width: 30%;
+    float: right;
+    margin: 0;
+    height: 100%;
+    overflow-y: scroll;
+    padding: 10px 20px 10px 20px;
+}
+
 .message.typing .messageBody {
     color: gray;
 }
@@ -173,15 +184,6 @@ ul {
     width: 30%;
     float: right;
     height: 100%;*/
-}
-
-.logMessages {
-    color: gray;
-    text-align: center;
-    width: 30%;
-    float: right;
-    height: 100%;
-    overflow-y: scroll;
 }
 
 #lat,
