@@ -26,9 +26,9 @@
     </li>
 
     <li class="login page">
-      <!--<div id="centerImg">
-        <a href="app-debug.apk"><img src="androidd.png" width="190" height="50"></a>
-      </div>-->
+      <div id="centerImg">
+        <a href="flocker-beta-debug.apk"><img src="androidd.png" width="190" height="50"></a>
+      </div>
 
       <p id="error"></p>
       <p id="lat"></p>
@@ -36,10 +36,14 @@
       <h2 class="titleWelcome">
         Welcome! <br> Set a radius on how far you want to receive messages from and then pick a nickname.
       </h2>
-      <br>
       <div class="form">
+       <!-- <label>
+    <input id="check" type="checkbox" />
+    <span class="label-text">Yes, let others to see their distance to me</label>
+        </label>
+        <br>-->
         <form>
-          <h5 class="titleRadius">1. Set a radius in meters</h5>
+          <h5 class="titleRadius">2. Set a radius in meters</h5>
           <input for="amount" oninput="amount.value=rangeInput.value" id="slider" type="range" min="50" max="1000" name="rangeInput" />
           <br>
           <input oninput="rangeInput.value=amount.value" id="radius" type="text" value="500" name="amount" for="rangeInput" oninput="rangeInput.value=amount.value" readonly />
@@ -52,6 +56,7 @@
   </ul>
 
   <script>
+    /*document.getElementById("check").checked = true;*/
     var x = document.getElementById("error");
     var lati = document.getElementsByClassName("latitude");
     var longi = document.getElementsByClassName("longitude");

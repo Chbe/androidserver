@@ -94,6 +94,27 @@ ul {
     border-bottom: 2px solid white;
 }
 
+label .label-text {
+    background: red;
+}
+label input#check:checked + .label-text {
+    background: lime;
+}
+
+input[type=range] {
+    width:230px; 
+    height:50px;
+    color: green;
+    
+}
+
+input[type=range] {
+    width:230px; 
+    height:50px;
+    color: green;
+    
+}
+
 .login.page .titleRadius {
     font-size: 150%;
 }
