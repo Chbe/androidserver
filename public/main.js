@@ -18,6 +18,7 @@ $(function() {
 
   var $longitude = $('#lon');
   var $latitude = $('#lat');
+  var $logMessages = $('.logMessages');
 
 
   // Prompt for setting a username
@@ -32,10 +33,10 @@ $(function() {
   function addParticipantsMessage(data) {
     var message = '';
     if (data.numUsers === 1) {
-      message += "there's 1 participant";
+      message += "Forever alone, nobody is here :(";
     }
     else {
-      message += "there are " + data.numUsers + " participants";
+      message += data.numUsers + " legends are now online";
     }
     log(message);
   }
@@ -85,8 +86,35 @@ $(function() {
 
   // Log a message
   function log(message, options) {
-    var $el = $('<li>').addClass('log').text(message);
-    addMessageElement($el, options);
+    var $el = $('<ul>').text(message);
+    addLogMessageElement($el, options);
+  }
+
+  function addLogMessageElement(el, options) {
+    var $el = $(el);
+
+    // Setup default options
+    if (!options) {
+      options = {};
+    }
+    if (typeof options.fade === 'undefined') {
+      options.fade = true;
+    }
+    if (typeof options.prepend === 'undefined') {
+      options.prepend = false;
+    }
+
+    // Apply options
+    if (options.fade) {
+      $el.hide().fadeIn(FADE_TIME);
+    }
+    if (options.prepend) {
+      $logMessages.prepend($el);
+    }
+    else {
+      $logMessages.append($el);
+    }
+    $logMessages[0].scrollTop = $logMessages[0].scrollHeight;
   }
 
   // Adds the visual chat message to the message list

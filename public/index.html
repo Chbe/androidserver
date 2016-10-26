@@ -5,30 +5,28 @@
   <meta charset="UTF-8">
   <title>Android chat server</title>
   <link rel="stylesheet" type="text/css" href="/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
 
 </head>
-
-<nav class="navbar navbar-inverse navbar-static-top">
-  <div class="container">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="#">Android Server</a>
-    </div>
-  </div>
 </nav>
 
 
 <body>
-  <p id="error"></p>
-  <p id="lat"></p>
-  <p id="lon"></p>
   <ul class="pages">
     <li class="chat page">
-      <div class="chatArea">
-        <ul class="messages"></ul>
-      </div>
-      <input class="inputMessage" placeholder="Type here..." />
+        <div class="chatArea">
+          <ul class="messages"></ul>
+          <div>
+            <ul class="logMessages">
+            </ul>
+          </div>
+        </div>
+        <input class="inputMessage" placeholder="Type here..." />
     </li>
     <li class="login page">
+      <p id="error"></p>
+      <p id="lat"></p>
+      <p id="lon"></p>
       <div class="form">
         <h3 class="title">What's your nickname?</h3>
         <input class="usernameInput" type="text" maxlength="14" />
