@@ -4,13 +4,23 @@
 <head>
   <meta charset="UTF-8">
   <title>Android chat server</title>
-  <link rel="stylesheet" href="style.css">
-  <h1><a href="https://christopherbengtsson.herokuapp.com/home">Gezuz, take me away from here!!!!!11</a></h1>
-  <p>
-    This Node.js server is what the future Android application is gonna communicate with. Feel free to try the chat. I've completely ignored the CSS here since this server is under development. </p>
+  <link rel="stylesheet" type="text/css" href="/bootstrap/dist/css/bootstrap.min.css">
+
 </head>
 
+<nav class="navbar navbar-inverse navbar-static-top">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">Android Server</a>
+    </div>
+  </div>
+</nav>
+
+
 <body>
+  <p id="error"></p>
+  <p id="lat"></p>
+  <p id="lon"></p>
   <ul class="pages">
     <li class="chat page">
       <div class="chatArea">
@@ -20,15 +30,12 @@
     </li>
     <li class="login page">
       <div class="form">
-        <h3 class="title">Username</h3>
+        <h3 class="title">What's your nickname?</h3>
         <input class="usernameInput" type="text" maxlength="14" />
       </div>
     </li>
   </ul>
-  <p id="error"></p>
-  <p id="lat"></p>
-  <p id="lon"></p>
-  
+
   <script>
     var x = document.getElementById("error");
     var lati = document.getElementsByClassName("latitude");
