@@ -88,6 +88,12 @@ ul {
     font-size: 200%;
 }
 
+.login.page .titleWelcome {
+    font-size: 200%;
+    padding-left: 7px;
+    border-bottom: 2px solid white;
+}
+
 .login.page .titleRadius {
     font-size: 150%;
 }
@@ -99,7 +105,8 @@ ul {
 
 .login.page .title,
 .login.page .usernameInput,
-.login.page .titleRadius {
+.login.page .titleRadius,
+.login.page .titleWelcome {
     color: #fff;
     font-weight: 100;
 }
