@@ -2,6 +2,6 @@ git add .
 
 git status
 
-git commit -m 'measure distance work'
+git commit -m 'scroll fix'
 
 git push origin master

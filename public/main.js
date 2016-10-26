@@ -134,7 +134,7 @@ $(function() {
 
     var round = Math.round(distance(lat1, lon1, lat2, lon2) * 10) / 10;
 
-    if (parseFloat(round) < 1000.1) {
+    if (parseFloat(round) < 10000.1) {
       var $usernameDiv = $('<span class="username"/>')
         .text(data.username + " ")
         .css('color', getUsernameColor(data.username));

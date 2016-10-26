@@ -58,6 +58,13 @@ ul {
     background-color: #24c19d;
 }
 
+#centerImg img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
 .login.page .form {
     height: 100px;
     margin-top: -100px;
