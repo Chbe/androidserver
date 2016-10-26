@@ -32,8 +32,18 @@
       <p id="error"></p>
       <p id="lat"></p>
       <p id="lon"></p>
+
+
+
       <div class="form">
-        <h3 class="title">Choose a nickname</h3>
+        <form>
+          <h5 class="titleRadius">1. Set a radius</h5>
+          <input for="amount" oninput="amount.value=rangeInput.value" id="slider" type="range" min="50" max="1000" name="rangeInput" />
+          <br>
+          <input oninput="rangeInput.value=amount.value" id="radius" type="text" value="50" name="amount" for="rangeInput" oninput="rangeInput.value=amount.value" readonly />
+        </form>
+        <br>
+        <h3 class="title">2. Choose a nickname</h3>
         <input class="usernameInput" type="text" maxlength="14" />
       </div>
     </li>

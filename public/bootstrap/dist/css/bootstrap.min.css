@@ -88,17 +88,21 @@ ul {
     font-size: 200%;
 }
 
+.login.page .titleRadius {
+    font-size: 150%;
+}
+
 .login.page .usernameInput {
     font-size: 200%;
     letter-spacing: 3px;
 }
 
 .login.page .title,
-.login.page .usernameInput {
+.login.page .usernameInput,
+.login.page .titleRadius {
     color: #fff;
     font-weight: 100;
 }
-
 
 /* Chat page */
 

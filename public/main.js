@@ -19,6 +19,7 @@ $(function() {
   var $longitude = $('#lon');
   var $latitude = $('#lat');
   var $logMessages = $('.logMessages');
+  var radius = $('#radius').val();
 
 
   // Prompt for setting a username
@@ -133,8 +134,9 @@ $(function() {
     var lon2 = parseFloat(data.longitude);
 
     var round = Math.round(distance(lat1, lon1, lat2, lon2) * 10) / 10;
+    var doubleRadius = radius + ".00";
 
-    if (parseFloat(round) < 10000.1) {
+    if (parseFloat(round) < parseFloat(doubleRadius)) {
       var $usernameDiv = $('<span class="username"/>')
         .text(data.username + " ")
         .css('color', getUsernameColor(data.username));
