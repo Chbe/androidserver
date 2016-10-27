@@ -19,8 +19,7 @@
     <li class="chat page">
       <div class="chatArea">
         <ul class="messages"></ul>
-        <ul class="logMessages">
-        </ul>
+        <ul class="logMessages"></ul>
       </div>
       <input class="inputMessage" placeholder="Type here..." />
     </li>
@@ -30,13 +29,7 @@
       <div id="centerImg">
         <img src="logga.png" height="180px" width="180px">
       </div>
-
-      <h2 class="titleWelcome">
-        Welcome! <br> Set a radius on how far you want to receive messages from and then pick a nickname.
-      </h2>
-      <p id="error"></p>
-      <p id="lat"></p>
-      <p id="lon"></p>
+      <p id="error"></p><p id="lat"></p><p id="lon"></p>
       <div class="form">
        <!-- <label>
     <input id="check" type="checkbox" />
@@ -44,7 +37,7 @@
         </label>
         <br>-->
         <form>
-          <h5 class="titleRadius">1. Set a radius in meters</h5>
+          <h5 class="titleRadius">1. Set a radius in meters on how far away you want to receive messages</h5>
           <input for="amount" oninput="amount.value=rangeInput.value" id="slider" type="range" min="50" max="1000" name="rangeInput" />
           <br>
           <input oninput="rangeInput.value=amount.value" id="radius" type="text" value="500" name="amount" for="rangeInput" oninput="rangeInput.value=amount.value" readonly />
