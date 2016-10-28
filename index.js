@@ -1,17 +1,12 @@
-//Initialize our Express Web framework.
+// Setup basic express server
 var express = require('express');
 var app = express();
-
-//socket IO stuff
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
-
-//get our port # from c9's enviromental variable: PORT
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
 var port = process.env.PORT || 3000;
 
-
-http.listen(port, function() {
-    console.log('Server running... PORT: ' +port);
+server.listen(port, function () {
+  console.log('Server listening at port %d', port);
 });
 
 // Routing
