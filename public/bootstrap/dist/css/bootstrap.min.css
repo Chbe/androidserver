@@ -50,7 +50,7 @@ ul {
 }
 
 .login.page {
-    background-color: #24c19d;
+    background-color: #fff;
     height: 100%;
 }
 
@@ -83,7 +83,7 @@ ul {
 .login.page .form .usernameInput {
     background-color: transparent;
     border: none;
-    border-bottom: 2px solid #fff;
+    border-bottom: 2px solid #000;
     outline: none;
     padding-bottom: 15px;
     text-align: center;
@@ -133,7 +133,7 @@ input[type=range] {
 .login.page .usernameInput,
 .login.page .titleRadius,
 .login.page .titleWelcome {
-    color: #fff;
+    color: #000;
     font-weight: 100;
 }
 
@@ -142,8 +142,8 @@ input[type=range] {
 
 .chat.page {
     display: none;
-    height: 100%;
-    background-color: rgb(148, 224, 207);
+    height: 80%;
+    background-color: #fff;
 }
 
 
@@ -236,7 +236,7 @@ input[type=range] {
 
 #lat,
 #lon {
-    color: #24c19d;
+    color: #fff;
 }
 
 
