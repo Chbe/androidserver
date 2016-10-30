@@ -15,10 +15,10 @@ $(function() {
 
   var $loginPage = $('.login.page'); // The login page
   var $chatPage = $('.chat.page'); // The chatroom page
+  var $send = $('#sendIt');
 
   var $longitude = $('#lon');
   var $latitude = $('#lat');
-  var $logMessages = $('.logMessages');
   var radius = $('#radius').val();
 
 
@@ -31,16 +31,22 @@ $(function() {
 
   var socket = io();
 
-  function addParticipantsMessage(data) {
-    var message = '';
-    if (data.numUsers === 1) {
-      message += "Forever alone, nobody is here :(";
-    }
-    else {
-      message += data.numUsers + " legends are now online";
-    }
-    log(message);
-  }
+  $send.click(function() {
+    sendMessage();
+  });
+
+  socket.on('updateusers', function(data) {
+
+    $('#users').empty();
+
+    $.each(data, function(key, value) {
+      var color = getUsernameColor(key);
+
+      $('#users').append('<div style=color:' + color + '>' + key + '</div>');
+
+    });
+
+  });
 
   // Sets the client's username
   function setUsername() {
@@ -72,7 +78,8 @@ $(function() {
         username: username,
         message: message,
         longitude: longitude,
-        latitude: latitude
+        latitude: latitude,
+        timestamp: Date.now()
 
       });
       // tell server to execute 'new message' and send along one parameter
@@ -80,42 +87,10 @@ $(function() {
         username: username,
         message: message,
         longitude: longitude,
-        latitude: latitude
+        latitude: latitude,
+        timestamp: Date.now()
       });
     }
-  }
-
-  // Log a message
-  function log(message, options) {
-    var $el = $('<ul>').text(message);
-    addLogMessageElement($el, options);
-  }
-
-  function addLogMessageElement(el, options) {
-    var $el = $(el);
-
-    // Setup default options
-    if (!options) {
-      options = {};
-    }
-    if (typeof options.fade === 'undefined') {
-      options.fade = true;
-    }
-    if (typeof options.prepend === 'undefined') {
-      options.prepend = false;
-    }
-
-    // Apply options
-    if (options.fade) {
-      $el.hide().fadeIn(FADE_TIME);
-    }
-    if (options.prepend) {
-      $logMessages.prepend($el);
-    }
-    else {
-      $logMessages.append($el);
-    }
-    $logMessages[0].scrollTop = $logMessages[0].scrollHeight;
   }
 
   // Adds the visual chat message to the message list
@@ -137,20 +112,31 @@ $(function() {
     var doubleRadius = radius + ".00";
 
     if (parseFloat(round) < parseFloat(doubleRadius)) {
+      var $timestampDiv = $('<span class="timestamp"/>')
+        .text(" " + round + "m away | " + formatDate(data.timestamp));
       var $usernameDiv = $('<span class="username"/>')
         .text(data.username + " ")
         .css('color', getUsernameColor(data.username));
       var $messageBodyDiv = $('<span class="messageBody">')
-        .text(data.message + " " + " " + round + "m away");
+        .text(data.message);
 
       var typingClass = data.typing ? 'typing' : '';
       var $messageDiv = $('<li class="message"/>')
         .data('username', data.username)
         .addClass(typingClass)
-        .append($usernameDiv, $messageBodyDiv);
+        .append($usernameDiv, $messageBodyDiv)
+        .append($timestampDiv, $messageBodyDiv);;
 
       addMessageElement($messageDiv, options);
     }
+  }
+
+  function formatDate(dateObj) {
+    var d = new Date(dateObj);
+    var hours = d.getHours();
+    var minutes = d.getMinutes().toString();
+
+    return hours + ":" + (minutes.length === 1 ? '0' + minutes : minutes);
   }
 
   function distance(lat1, lon1, lat2, lon2) {
@@ -302,12 +288,6 @@ $(function() {
   // Whenever the server emits 'login', log the login message
   socket.on('login', function(data) {
     connected = true;
-    // Display the welcome message
-    var message = "Android server chat";
-    log(message, {
-      prepend: true
-    });
-    addParticipantsMessage(data);
   });
 
   // Whenever the server emits 'new message', update the chat body
@@ -316,15 +296,10 @@ $(function() {
   });
 
   // Whenever the server emits 'user joined', log it in the chat body
-  socket.on('user joined', function(data) {
-    log(data.username + ' joined');
-    addParticipantsMessage(data);
-  });
+
 
   // Whenever the server emits 'user left', log it in the chat body
   socket.on('user left', function(data) {
-    log(data.username + ' left');
-    addParticipantsMessage(data);
     removeChatTyping(data);
   });
 

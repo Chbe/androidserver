@@ -56,6 +56,11 @@ b,
 strong {
   font-weight: bold;
 }
+
+span.timestamp {
+  float: right;
+  color: gray;
+}
 dfn {
   font-style: italic;
 }
@@ -2369,6 +2374,7 @@ table th[class*="col-"] {
 .table > tfoot > tr.success > th {
   background-color: #dff0d8;
 }
+
 .table-hover > tbody > tr > td.success:hover,
 .table-hover > tbody > tr > th.success:hover,
 .table-hover > tbody > tr.success:hover > td,
