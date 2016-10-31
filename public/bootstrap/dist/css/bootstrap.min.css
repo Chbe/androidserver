@@ -333,5 +333,92 @@ input[type="search"] {
     }
 }
 
+input[type=range].slider {
+  -webkit-appearance: none;
+    width: 40%;
+    margin: auto;
+}
+input[type=range].slider:focus {
+  outline: none;
+}
+input[type=range].slider::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 8.1px;
+  cursor: pointer;
+  box-shadow: 0px 0px 0px #00a500, 0px 0px 0px #00bf00;
+  background: #94e0cf;
+  border-radius: 25px;
+  border: 0px solid #000001;
+}
+input[type=range].slider::-webkit-slider-thumb {
+  box-shadow: 0px 0px 5.7px rgba(0, 0, 0, 0.95), 0px 0px 0px rgba(13, 13, 13, 0.95);
+  border: 1.5px solid rgba(10, 255, 255, 0.46);
+  height: 24px;
+  width: 25px;
+  border-radius: 50px;
+  background: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -7.95px;
+}
+input[type=range].slider:focus::-webkit-slider-runnable-track {
+  background: #47d544;
+}
+input[type=range].slider::-moz-range-track {
+  width: 100%;
+  height: 8.1px;
+  cursor: pointer;
+  box-shadow: 0px 0px 0px #00a500, 0px 0px 0px #00bf00;
+  background: #47d544;
+  border-radius: 25px;
+  border: 0px solid #000001;
+}
+input[type=range].slider::-moz-range-thumb {
+  box-shadow: 0px 0px 5.7px rgba(0, 0, 0, 0.95), 0px 0px 0px rgba(13, 13, 13, 0.95);
+  border: 1.5px solid rgba(10, 255, 255, 0.46);
+  height: 24px;
+  width: 25px;
+  border-radius: 50px;
+  background: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+}
+input[type=range].slider::-ms-track {
+  width: 100%;
+  height: 8.1px;
+  cursor: pointer;
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+input[type=range].slider::-ms-fill-lower {
+  background: #47d544;
+  border: 0px solid #000001;
+  border-radius: 50px;
+  box-shadow: 0px 0px 0px #00a500, 0px 0px 0px #00bf00;
+}
+input[type=range].slider::-ms-fill-upper {
+  background: #47d544;
+  border: 0px solid #000001;
+  border-radius: 50px;
+  box-shadow: 0px 0px 0px #00a500, 0px 0px 0px #00bf00;
+}
+input[type=range].slider::-ms-thumb {
+  box-shadow: 0px 0px 5.7px rgba(0, 0, 0, 0.95), 0px 0px 0px rgba(13, 13, 13, 0.95);
+  border: 1.5px solid rgba(10, 255, 255, 0.46);
+  height: 24px;
+  width: 25px;
+  border-radius: 50px;
+  background: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+  height: 8.1px;
+}
+input[type=range].slider:focus::-ms-fill-lower {
+  background: #47d544;
+}
+input[type=range].slider:focus::-ms-fill-upper {
+  background: #47d544;
+}
+
+
 
 /*# sourceMappingURL=bootstrap.min.css.map */
