@@ -240,6 +240,10 @@ span.timestamp {
     border-bottom: 1px solid gray;
 }
 
+#error {
+    color: red;
+}
+
 .form-control {
     display: block;
     width: 100%;
