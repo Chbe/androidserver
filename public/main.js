@@ -19,6 +19,7 @@ $(function() {
 
   var $longitude = $('#lon');
   var $latitude = $('#lat');
+  var $error = $('#error');
   var radius = $('#radius').val();
 
 
@@ -53,14 +54,16 @@ $(function() {
     username = cleanInput($usernameInput.val().trim());
 
     // If the username is valid
-    if (username) {
-      $loginPage.fadeOut();
-      $chatPage.show();
-      $loginPage.off('click');
-      $currentInput = $inputMessage.focus();
+    if (!$error.text()) {
+      if (username) {
+        $loginPage.fadeOut();
+        $chatPage.show();
+        $loginPage.off('click');
+        $currentInput = $inputMessage.focus();
 
-      // Tell the server your username
-      socket.emit('add user', username);
+        // Tell the server your username
+        socket.emit('add user', username);
+      }
     }
   }
 
