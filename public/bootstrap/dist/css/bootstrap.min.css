@@ -235,7 +235,7 @@ span.timestamp {
 }
 
 #onlineTitle {
-    color: green;
+    color: #5cb85c;
     font-size: 150%;
     border-bottom: 1px solid gray;
 }
