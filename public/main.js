@@ -128,7 +128,7 @@ $(function() {
         .data('username', data.username)
         .addClass(typingClass)
         .append($usernameDiv, $messageBodyDiv)
-        .append($timestampDiv, $messageBodyDiv);;
+        .append($timestampDiv, $messageBodyDiv);
 
       addMessageElement($messageDiv, options);
     }
