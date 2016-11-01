@@ -16,13 +16,9 @@
       <div class="chatArea">
         <ul class="messages"></ul>
         <div class="onlineUsers">
-
           <b id="onlineTitle">Online Users</b>
-
           <div id="users"></div>
-
         </div>
-
       </div>
       <div class="row">
         <div class="col-sm-8">
@@ -33,9 +29,7 @@
         </div>
       </div>
     </li>
-
     <li class="login page">
-
       <div id="centerImg">
         <img src="logga.png" height="180px" width="180px">
       </div>
@@ -43,14 +37,9 @@
       <p id="lat"></p>
       <p id="lon"></p>
       <div class="form">
-        <!-- <label>
-    <input id="check" type="checkbox" />
-    <span class="label-text">Yes, let others to see their distance to me</label>
-        </label>
-        <br>-->
         <form>
           <h5 class="titleRadius">1. Set a radius in meters on how far away you want to receive messages</h5>
-          <input for="amount" oninput="amount.value=rangeInput.value" class="slider" type="range" min="50" max="1000" name="rangeInput" />
+          <input for="amount" oninput="amount.value=rangeInput.value" class="slider" type="range" min="30" max="3000" name="rangeInput" />
           <br>
           <input oninput="rangeInput.value=amount.value" id="radius" type="text" value="500" name="amount" for="rangeInput" oninput="rangeInput.value=amount.value" readonly />
         </form>
@@ -62,53 +51,10 @@
     </li>
   </ul>
 
-  <script>
-    /*document.getElementById("check").checked = true;*/
-    var x = document.getElementById("error");
-    var lati = document.getElementsByClassName("latitude");
-    var longi = document.getElementsByClassName("longitude");
-    var lat = document.getElementById("lat");
-    var lon = document.getElementById("lon");
-
-    function getLocation() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition, showError);
-      }
-      else {
-        x.innerHTML = "Geolocation is not supported by this browser.";
-      }
-    }
-
-    function showPosition(position) {
-      lat.innerHTML = position.coords.latitude;
-      lon.innerHTML = position.coords.longitude
-
-
-    }
-
-    function showError(error) {
-      switch (error.code) {
-        case error.PERMISSION_DENIED:
-          x.innerHTML = "User denied the request for Geolocation. You cant login."
-          break;
-        case error.POSITION_UNAVAILABLE:
-          x.innerHTML = "Location information is unavailable. You cant login."
-          break;
-        case error.TIMEOUT:
-          x.innerHTML = "The request to get user location timed out. You cant login."
-          break;
-        case error.UNKNOWN_ERROR:
-          x.innerHTML = "An unknown error occurred. You cant login."
-          break;
-      }
-    }
-
-
-    window.onload = getLocation;
-  </script>
   <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
-  <script src="/main.js"></script>
+  <script src="/chat.js"></script>
+  <script src="/geolocation.js"></script>
 </body>
 
 </html>
