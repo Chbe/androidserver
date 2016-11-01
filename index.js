@@ -34,6 +34,7 @@ io.on('connection', function(socket) {
     usernames[username] = username;
     ++numUsers;
     addedUser = true;
+    console.log(socket.username + " has Connected! " + Object.keys(usernames).length + " users online");
     io.emit('updateusers', usernames);
     socket.emit('login', {
       numUsers: numUsers
@@ -68,6 +69,7 @@ io.on('connection', function(socket) {
         username: socket.username,
         numUsers: numUsers
       });
+      console.log(socket.username + ' has disconnected! ' + Object.keys(usernames).length + " users online");
     }
   });
 });
