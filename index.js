@@ -35,15 +35,17 @@ io.on('connection', function(socket) {
     ++numUsers;
     addedUser = true;
     console.log(socket.username + " has Connected! " + Object.keys(usernames).length + " users online");
-    io.emit('updateusers', usernames);
     socket.emit('login', {
       numUsers: numUsers
+      
     });
     
     socket.broadcast.emit('user joined', {
       username: socket.username,
       numUsers: numUsers
     });
+    
+    io.emit('updateusers', usernames);
   });
 
   socket.on('typing', function() {

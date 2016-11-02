@@ -2,6 +2,6 @@ git add .
 
 git status
 
-git commit -m 'initial commit'
+git commit -m 'update apk'
 
 git push origin master
