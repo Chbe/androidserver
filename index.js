@@ -23,6 +23,7 @@ io.on('connection', function(socket) {
       message: data.message,
       longitude: data.longitude,
       latitude: data.latitude,
+      image: data.image,
       timestamp: Date.now()
     });
   });
