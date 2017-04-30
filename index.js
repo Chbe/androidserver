@@ -54,9 +54,8 @@ io.on('connection', function (socket) {
 
     });
 
-    socket.broadcast.to(room).emit('user joined', {
-      username: socket.username,
-      numUsers: numUsers
+    socket.broadcast.to(room).emit('user count', {
+      numUsers: numClients[room]
     });
 
     io.to(room).emit('updateusers', usernames);
@@ -81,9 +80,8 @@ io.on('connection', function (socket) {
       io.to(socket.room).emit('updateusers', usernames);
 
 
-      socket.broadcast.to(socket.room).emit('user left', {
-        username: socket.username,
-        numUsers: numUsers
+      socket.broadcast.to(socket.room).emit('user count', {
+        numUsers: numClients[socket.room]
       });
       numClients[socket.room]--;
 
