@@ -98,12 +98,12 @@ io.on('connection', function (socket) {
 
       console.log(socket.username + ' has disconnected from room ' + socket.room + '! ' + numClients[socket.room] + " users online here now");
 
+      io.to(room).emit('user count', numClients[room]);
+
       if (numClients[socket.room] === 0) {
         arrayOfRooms.splice(arrayOfRooms.indexOf(socket.room, 1));
         console.log("That was the last user in that room so now its deleted", arrayOfRooms);
       }
-
-      io.to(room).emit('user count', numClients[room]);
     }
   });
 });
