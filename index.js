@@ -4,7 +4,7 @@ var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var port = process.env.PORT || 3000;
 
-server.listen(port, function() {
+server.listen(port, function () {
   console.log('Server listening at port %d', port);
 });
 
@@ -12,13 +12,15 @@ app.use(express.static(__dirname + '/public'));
 
 var numUsers = 0;
 var usernames = {};
+var arrayOfRooms = [];
+var numClients = {};
 
-io.on('connection', function(socket) {
+io.on('connection', function (socket) {
   var addedUser = false;
 
-  socket.on('new message', function(data) {
-    
-    socket.broadcast.emit('new message', {
+  socket.on('new message', function (data) {
+
+    socket.broadcast.to(data.room).emit('new message', {
       username: socket.username,
       message: data.message,
       longitude: data.longitude,
@@ -28,51 +30,69 @@ io.on('connection', function(socket) {
     });
   });
 
-  socket.on('add user', function(username) {
+  socket.on('add user', function (username, room) {
+    if (!arrayOfRooms.find(item => item === room)) {
+      arrayOfRooms.push(room);
+      console.log("Room skapades:", room, "Arrayen:", arrayOfRooms);
+    }
     if (addedUser) return;
 
     socket.username = username;
+    socket.room = room;
     usernames[username] = username;
+    socket.join(room);
+    if (numClients[room] == undefined) {
+      numClients[room] = 1;
+    } else {
+      numClients[room]++;
+    }
     ++numUsers;
     addedUser = true;
-    console.log(socket.username + " has Connected! " + Object.keys(usernames).length + " users online");
-    socket.emit('login', {
+    console.log(socket.username + " has Connected to room " + room + "! " + numClients[room] + " users online here now");
+    socket.to(room).emit('login', {
       numUsers: numUsers
-      
+
     });
-    
-    socket.broadcast.emit('user joined', {
+
+    socket.broadcast.to(room).emit('user joined', {
       username: socket.username,
       numUsers: numUsers
     });
-    
-    io.emit('updateusers', usernames);
+
+    io.to(room).emit('updateusers', usernames);
   });
 
-  socket.on('typing', function() {
-    socket.broadcast.emit('typing', {
-      username: socket.username
-    });
-  });
+  // socket.on('typing', function() {
+  //   socket.broadcast.emit('typing', {
+  //     username: socket.username
+  //   });
+  // });
 
-  socket.on('stop typing', function() {
-    socket.broadcast.emit('stop typing', {
-      username: socket.username
-    });
-  });
+  // socket.on('stop typing', function() {
+  //   socket.broadcast.emit('stop typing', {
+  //     username: socket.username
+  //   });
+  // });
 
-  socket.on('disconnect', function() {
+  socket.on('disconnect', function () {
     if (addedUser) {
       --numUsers;
       delete usernames[socket.username];
-      io.emit('updateusers', usernames);
+      io.to(socket.room).emit('updateusers', usernames);
 
 
-      socket.broadcast.emit('user left', {
+      socket.broadcast.to(socket.room).emit('user left', {
         username: socket.username,
         numUsers: numUsers
       });
-      console.log(socket.username + ' has disconnected! ' + Object.keys(usernames).length + " users online");
+      numClients[socket.room]--;
+
+      console.log(socket.username + ' has disconnected from room ' + socket.room + '! ' + numClients[socket.room] + " users online here now");
+
+      if (numClients[socket.room] === 0) {
+        arrayOfRooms.splice(arrayOfRooms.indexOf(socket.room, 1));
+        console.log("That was the last user in that room so now its deleted", arrayOfRooms);
+      }
     }
   });
 });

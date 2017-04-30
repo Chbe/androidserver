@@ -63,7 +63,7 @@ $(function() {
         $loginPage.off('click');
         $currentInput = $inputMessage.focus();
 
-        socket.emit('add user', username);
+        socket.emit('add user', username, 'Örebro');
       }
     }
   }
@@ -86,6 +86,7 @@ $(function() {
       });
 
       socket.emit('new message', {
+        room: 'Örebro',
         username: username,
         message: message,
         longitude: longitude,
