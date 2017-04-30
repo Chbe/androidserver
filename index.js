@@ -98,7 +98,7 @@ io.on('connection', function (socket) {
 
       console.log(socket.username + ' has disconnected from room ' + socket.room + '! ' + numClients[socket.room] + " users online here now");
 
-      io.to(room).emit('user count', numClients[room]);
+      io.to(socket.room).emit('user count', numClients[socket.room]);
 
       if (numClients[socket.room] === 0) {
         arrayOfRooms.splice(arrayOfRooms.indexOf(socket.room, 1));
