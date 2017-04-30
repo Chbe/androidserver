@@ -62,9 +62,13 @@ io.on('connection', function (socket) {
   });
 
   socket.on('get online users', function (room) {
-    socket.to(room).emit('user count', {
-      numUsers: numClients[room]
 
+    // socket.to(room).emit('user count', {
+    //   numUsers: numClients[room]
+
+    // });
+    socket.broadcast.to(room).emit('user count', {
+      numUsers: numClients[room]
     });
   });
 
