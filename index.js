@@ -61,16 +61,16 @@ io.on('connection', function (socket) {
     io.to(room).emit('user count', numClients[room]);
   });
 
-  socket.on('get online users', function (room) {
+  // socket.on('get online users', function (room) {
 
-    // socket.to(room).emit('user count', {
-    //   numUsers: numClients[room]
+  //   // socket.to(room).emit('user count', {
+  //   //   numUsers: numClients[room]
 
-    // });
-    socket.broadcast.to(room).emit('user count', {
-      numUsers: numClients[room]
-    });
-  });
+  //   // });
+  //   socket.broadcast.to(room).emit('user count', {
+  //     numUsers: numClients[room]
+  //   });
+  // });
 
   // socket.on('typing', function() {
   //   socket.broadcast.emit('typing', {
