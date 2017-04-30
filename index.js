@@ -54,11 +54,11 @@ io.on('connection', function (socket) {
 
     // });
 
-    socket.broadcast.to(room).emit('user count', {
-      numUsers: numClients[room]
-    });
+    // socket.broadcast.to(room).emit('user count', {
+    //   numUsers: numClients[room]
+    // });
 
-    io.to(room).emit('updateusers', usernames);
+    io.to(room).emit('user count', numClients[room]);
   });
 
   socket.on('get online users', function (room) {
@@ -102,6 +102,8 @@ io.on('connection', function (socket) {
         arrayOfRooms.splice(arrayOfRooms.indexOf(socket.room, 1));
         console.log("That was the last user in that room so now its deleted", arrayOfRooms);
       }
+
+      io.to(room).emit('user count', numClients[room]);
     }
   });
 });
