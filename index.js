@@ -49,16 +49,23 @@ io.on('connection', function (socket) {
     ++numUsers;
     addedUser = true;
     console.log(socket.username + " has Connected to room " + room + "! " + numClients[room] + " users online here now");
+    // socket.to(room).emit('user count', {
+    //   numUsers: numClients[room]
+
+    // });
+
+    socket.broadcast.to(room).emit('user count', {
+      numUsers: numClients[room]
+    });
+
+    io.to(room).emit('updateusers', usernames);
+  });
+
+  socket.on('get online users', function (room) {
     socket.to(room).emit('user count', {
       numUsers: numClients[room]
 
     });
-
-    // socket.broadcast.to(room).emit('user count', {
-    //   numUsers: numClients[room]
-    // });
-
-    io.to(room).emit('updateusers', usernames);
   });
 
   // socket.on('typing', function() {
