@@ -27,14 +27,14 @@ var port = process.env.PORT || 3000;
 //   secretAccessKey: process.env.FACEBOOK_SECRET
 // });
 
-var ett = process.env.FACEBOOK_APP_ID;
+var ett = process.env.FACEBOOK_ID;
 var tva = process.env.FACEBOOK_SECRET;
 
 server.listen(port, function () {
   console.log('Server listening at port %d', port);
 });
 
-console.log(process.env, tva);
+console.log(process.env, tva, ett);
 
 app.use(express.static(__dirname + '/public'));
 app.use(allowCrossDomain);
