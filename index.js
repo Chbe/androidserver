@@ -20,12 +20,12 @@ var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var port = process.env.PORT || 3000;
 
-const aws = require('aws-sdk');
+// const aws = require('aws-sdk');
 
-let s3 = new aws.S3({
-  accessKeyId: process.env.FACEBOOK_APP_ID,
-  secretAccessKey: process.env.FACEBOOK_SECRET
-});
+// let s3 = new aws.S3({
+//   accessKeyId: process.env.FACEBOOK_APP_ID,
+//   secretAccessKey: process.env.FACEBOOK_SECRET
+// });
 
 server.listen(port, function () {
   console.log('Server listening at port %d', port);
@@ -88,7 +88,7 @@ io.on('connection', function (socket) {
 
     io.to(room).emit('user count', numClients[room]);
 
-    socket.emit('events keys', s3);
+    // socket.emit('events keys', s3);
   });
 
   // socket.on('get online users', function (room) {
