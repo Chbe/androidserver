@@ -34,7 +34,7 @@ server.listen(port, function () {
   console.log('Server listening at port %d', port);
 });
 
-console.log(ett, tva);
+console.log(process.env.FACEBOOK_APP_ID.process.env.FACEBOOK_APP_ID, tva);
 
 app.use(express.static(__dirname + '/public'));
 app.use(allowCrossDomain);
