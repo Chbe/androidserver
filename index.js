@@ -63,6 +63,7 @@ io.on('connection', function (socket) {
   });
 
   socket.on('request keys', function () {
+    console.log('https://graph.facebook.com/oauth/access_token?client_id='+id+'&client_secret='+sevret+'&grant_type=client_credentials');
     request('https://graph.facebook.com/oauth/access_token?client_id='+id+'&client_secret='+sevret+'&grant_type=client_credentials', function (error, response, body) {
       if (!error && response.statusCode == 200) {
         var info = JSON.parse(body)
