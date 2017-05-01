@@ -1,3 +1,19 @@
+var allowCrossDomain = function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+
+  // intercept OPTIONS method
+  if ('OPTIONS' == req.method) {
+    console.log('hit options');
+    res.send(200);
+  }
+  else {
+    next();
+  }
+};
+
+
 var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
@@ -16,6 +32,7 @@ server.listen(port, function () {
 });
 
 app.use(express.static(__dirname + '/public'));
+app.use(allowCrossDomain);
 
 var numUsers = 0;
 var usernames = {};
@@ -38,7 +55,7 @@ io.on('connection', function (socket) {
   });
 
   socket.on('request login', function (username) {
-    if(usernames[username]) {
+    if (usernames[username]) {
       socket.emit('login fail', username);
     }
     else {
@@ -48,7 +65,7 @@ io.on('connection', function (socket) {
 
   socket.on('add user', function (username, room) {
 
-    
+
 
     if (!arrayOfRooms.find(item => item === room)) {
       arrayOfRooms.push(room);
