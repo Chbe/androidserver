@@ -1,17 +1,17 @@
-// var allowCrossDomain = function (req, res, next) {
-//   res.header('Access-Control-Allow-Origin', '*');
-//   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-//   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+var allowCrossDomain = function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
 
-//   // intercept OPTIONS method
-//   if ('OPTIONS' == req.method) {
-//     console.log('hit options');
-//     res.send(200);
-//   }
-//   else {
-//     next();
-//   }
-// };
+  // intercept OPTIONS method
+  if ('OPTIONS' == req.method) {
+    console.log('hit options');
+    res.send(200);
+  }
+  else {
+    next();
+  }
+};
 
 
 var express = require('express');
@@ -30,14 +30,17 @@ var port = process.env.PORT || 3000;
 var id = process.env.FACEBOOK_ID;
 var sevret = process.env.FACEBOOK_SECRET;
 
+
+
 server.listen(port, function () {
   console.log('Server listening at port %d', port);
 });
 
-console.log("Facebook id:", id, "FAcebook secret:", sevret);
-
 app.use(express.static(__dirname + '/public'));
-// app.use(allowCrossDomain);
+app.use(allowCrossDomain);
+
+var request = require('request');
+
 
 var numUsers = 0;
 var usernames = {};
@@ -60,10 +63,14 @@ io.on('connection', function (socket) {
   });
 
   socket.on('request keys', function () {
-    socket.emit('event keys', {
-      eventID: id,
-      eventSec: sevret
-    });
+    request('https://graph.facebook.com/oauth/access_token?client_id='+id+'&client_secret='+sevret+'&grant_type=client_credentials', function (error, response, body) {
+      if (!error && response.statusCode == 200) {
+        var info = JSON.parse(body)
+        socket.emit('event keys', {
+          data: info.access_token
+        });
+      }
+    })
   });
 
   socket.on('request login', function (username) {
