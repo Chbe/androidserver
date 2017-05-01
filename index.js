@@ -30,7 +30,19 @@ io.on('connection', function (socket) {
     });
   });
 
+  socket.on('request login', function (username) {
+    if(usernames[username]) {
+      socket.emit('login fail', username);
+    }
+    else {
+      socket.emit('login success', username);
+    }
+  });
+
   socket.on('add user', function (username, room) {
+
+    
+
     if (!arrayOfRooms.find(item => item === room)) {
       arrayOfRooms.push(room);
       console.log("Room skapades:", room, "Arrayen:", arrayOfRooms);
@@ -49,14 +61,6 @@ io.on('connection', function (socket) {
     ++numUsers;
     addedUser = true;
     console.log(socket.username + " has Connected to room " + room + "! " + numClients[room] + " users online here now");
-    // socket.to(room).emit('user count', {
-    //   numUsers: numClients[room]
-
-    // });
-
-    // socket.broadcast.to(room).emit('user count', {
-    //   numUsers: numClients[room]
-    // });
 
     io.to(room).emit('user count', numClients[room]);
   });
