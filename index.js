@@ -45,7 +45,6 @@ var request = require('request');
 var numUsers = 0;
 var usernames = {};
 var arrayOfRooms = [];
-var numClients = {};
 
 io.on('connection', function (socket) {
   var addedUser = false;
@@ -63,8 +62,8 @@ io.on('connection', function (socket) {
   });
 
   socket.on('request keys', function () {
-    console.log('https://graph.facebook.com/oauth/access_token?client_id='+id+'&client_secret='+sevret+'&grant_type=client_credentials');
-    request('https://graph.facebook.com/oauth/access_token?client_id='+id+'&client_secret='+sevret+'&grant_type=client_credentials', function (error, response, body) {
+    console.log('https://graph.facebook.com/oauth/access_token?client_id=' + id + '&client_secret=' + sevret + '&grant_type=client_credentials');
+    request('https://graph.facebook.com/oauth/access_token?client_id=' + id + '&client_secret=' + sevret + '&grant_type=client_credentials', function (error, response, body) {
       if (!error && response.statusCode == 200) {
         var info = JSON.parse(body)
         socket.emit('event keys', {
@@ -97,16 +96,15 @@ io.on('connection', function (socket) {
     socket.room = room;
     usernames[username] = username;
     socket.join(room);
-    if (numClients[room] == undefined) {
-      numClients[room] = 1;
-    } else {
-      numClients[room]++;
-    }
     ++numUsers;
     addedUser = true;
-    console.log(socket.username + " has Connected to room " + room + "! " + numClients[room] + " users online here now");
+    console.log(socket.username + " has Connected to room " + room + "! " + io.sockets.adapter.rooms[room].length + " users online here now");
 
-    io.to(room).emit('user count', numClients[room]);
+    // var c = io.sockets.adapter.rooms[room].sockets;
+
+    io.to(room).emit('user count', {
+      numbers: io.sockets.adapter.rooms[room].length
+    });
 
     // socket.emit('events keys', s3);
   });
@@ -142,15 +140,16 @@ io.on('connection', function (socket) {
 
 
       socket.broadcast.to(socket.room).emit('user count', {
-        numUsers: numClients[socket.room]
+        numUsers: io.sockets.adapter.rooms[socket.room].length
       });
-      numClients[socket.room]--;
 
-      console.log(socket.username + ' has disconnected from room ' + socket.room + '! ' + numClients[socket.room] + " users online here now");
+      console.log(socket.username + ' has disconnected from room ' + socket.room + '! ' + io.sockets.adapter.rooms[socket.room].length + " users online here now");
 
-      io.to(socket.room).emit('user count', numClients[socket.room]);
+      io.to(socket.room).emit('user count', {
+        numbers: io.sockets.adapter.rooms[socket.room].length
+      });
 
-      if (numClients[socket.room] === 0) {
+      if (io.sockets.adapter.rooms[socket.room].length === 0) {
         arrayOfRooms.splice(arrayOfRooms.indexOf(socket.room, 1));
         console.log("That was the last user in that room so now its deleted", arrayOfRooms);
       }
