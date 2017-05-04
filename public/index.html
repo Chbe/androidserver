@@ -4,57 +4,31 @@
 <head>
   <meta charset="UTF-8">
   <title>Android chat server</title>
-  <link rel="stylesheet" type="text/css" href="/bootstrap/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="/bootstrap/dist/css/bootstrap.css">
-  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
 
 </head>
 
-<body>
-  <ul class="pages">
-    <li class="chat page">
-      <div class="chatArea">
-        <ul class="messages"></ul>
-        <div class="onlineUsers">
-          <b id="onlineTitle">Online Users</b>
-          <div id="users"></div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-8">
-          <input class="form-control" placeholder="Type here..." />
-        </div>
-        <div class="col-sm-3">
-          <button type="submit" class="btn btn-success" id="sendIt">Send Message</button>
-        </div>
-      </div>
-    </li>
-    <li class="login page">
-      <!--<div id="centerImg">
-        <img src="logga.png" height="180px" width="180px">
-      </div>-->
-      <p id="error"></p>
-      <p id="lat"></p>
-      <p id="lon"></p>
-      <div class="form">
-        <form>
-          <h5 class="titleRadius">1. Set a radius in meters on how far away you want to receive messages</h5>
-          <input for="amount" oninput="amount.value=rangeInput.value" class="slider" type="range" min="30" max="3000" name="rangeInput" />
-          <br>
-          <input oninput="rangeInput.value=amount.value" id="radius" type="text" value="500" name="amount" for="rangeInput" oninput="rangeInput.value=amount.value" readonly />
-        </form>
-        <br>
-        <h3 class="title">2. Choose a nickname</h3>
-        <input class="usernameInput" type="text" maxlength="14" />
-      </div>
-      <a href="flocker-beta-debug.apk"><img class="fix" src="androidd.png" width="190" height="50"></a>
-    </li>
-  </ul>
+<body onload="myFunction()" bgcolor="#000000">
 
-  <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+  <h1 id="myId" align="center" style="
+      position: relative;
+      margin: 0;
+      color: white;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-right: -50%;
+      transform: translate(-50%, -50%);"></h1>
+
+  <script>
+    function myFunction() {
+      var socket = io();
+      socket.emit('total count');
+      socket.on('total counts', (data) => {
+        document.getElementById("myId").innerHTML = data.count + ' people online in ' + data.cities + ' cities';
+      });
+    }
+  </script>
   <script src="/socket.io/socket.io.js"></script>
-  <script src="/chat.js"></script>
-  <script src="/geolocation.js"></script>
 </body>
 
 </html>

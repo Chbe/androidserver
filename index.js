@@ -98,33 +98,24 @@ io.on('connection', function (socket) {
     socket.join(room);
     ++numUsers;
     addedUser = true;
-    console.log(socket.username + " has Connected to room " + room + "! " + io.sockets.adapter.rooms[room].length + " users online here now");
+    var numberOfUsers = io.sockets.adapter.rooms[room].length;
+    console.log(socket.username + " has Connected to room " + room + "! " + numberOfUsers + " users online here now");
 
     // var c = io.sockets.adapter.rooms[room].sockets;
 
     io.to(room).emit('user count', {
-      numbers: io.sockets.adapter.rooms[room].length
+      numbers: numberOfUsers
     });
 
     // socket.emit('events keys', s3);
   });
-
-  // socket.on('get online users', function (room) {
-
-  //   // socket.to(room).emit('user count', {
-  //   //   numUsers: numClients[room]
-
-  //   // });
-  //   socket.broadcast.to(room).emit('user count', {
-  //     numUsers: numClients[room]
-  //   });
-  // });
-
-  // socket.on('typing', function() {
-  //   socket.broadcast.emit('typing', {
-  //     username: socket.username
-  //   });
-  // });
+  
+  socket.on('total count', function() {
+    socket.emit('total counts', {
+      count: numUsers,
+      cities: arrayOfRooms.length
+    });
+  });
 
   // socket.on('stop typing', function() {
   //   socket.broadcast.emit('stop typing', {
@@ -138,18 +129,18 @@ io.on('connection', function (socket) {
       delete usernames[socket.username];
       io.to(socket.room).emit('updateusers', usernames);
 
-
+      var usersInRoom = io.sockets.adapter.rooms[socket.room].length;
       socket.broadcast.to(socket.room).emit('user count', {
-        numUsers: io.sockets.adapter.rooms[socket.room].length
+        numUsers: usersInRoom
       });
 
-      console.log(socket.username + ' has disconnected from room ' + socket.room + '! ' + io.sockets.adapter.rooms[socket.room].length + " users online here now");
+      console.log(socket.username + ' has disconnected from room ' + socket.room + '! ' + usersInRoom + " users online here now");
 
       io.to(socket.room).emit('user count', {
-        numbers: io.sockets.adapter.rooms[socket.room].length
+        numbers: usersInRoom
       });
 
-      if (io.sockets.adapter.rooms[socket.room].length === 0) {
+      if (usersInRoom === 0) {
         arrayOfRooms.splice(arrayOfRooms.indexOf(socket.room, 1));
         console.log("That was the last user in that room so now its deleted", arrayOfRooms);
       }

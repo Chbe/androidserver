@@ -53,7 +53,27 @@ $(function() {
 
   });
 
-  function setUsername() {
+//   $(function () {
+
+
+//   var cities;
+//   var totalNumberOfUsers;
+
+//   var socket = io();
+
+//   $(window).load(function () {
+//     socket.emit('connection');
+//     socket.emit('total count');
+
+//     socket.on('total counts', function (data) {
+//       console.log(data);
+//       totalNumberOfUsers = data.count;
+//       cities = data.cities;
+//     });
+//   });
+// });
+
+  $(window).load(function () {
     username = cleanInput($usernameInput.val().trim());
 
     if (!$error.text()) {
@@ -66,7 +86,7 @@ $(function() {
         socket.emit('add user', username, 'Örebro');
       }
     }
-  }
+  });
 
   function sendMessage() {
     var message = $inputMessage.val();
