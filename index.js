@@ -20,6 +20,8 @@ var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var port = process.env.PORT || 3000;
 
+
+
 // const aws = require('aws-sdk');
 
 // let s3 = new aws.S3({
@@ -32,9 +34,7 @@ var sevret = process.env.FACEBOOK_SECRET;
 
 
 
-server.listen(port, function () {
-  console.log('Server listening at port %d', port);
-});
+
 
 app.use(express.static(__dirname + '/public'));
 app.use(allowCrossDomain);
@@ -42,9 +42,15 @@ app.use(allowCrossDomain);
 var request = require('request');
 
 
+server.listen(port, function () {
+  console.log('Server listening at port %d', port);
+});
+
 var numUsers = 0;
 var usernames = {};
 var arrayOfRooms = [];
+
+
 
 io.on('connection', function (socket) {
   var addedUser = false;
@@ -60,6 +66,47 @@ io.on('connection', function (socket) {
       timestamp: Date.now()
     });
   });
+
+  socket.on('new message to bot', function (data) {
+    botAI(data);
+  });
+
+  function botAI(data) {
+    var apiai = require('apiai');
+    var appai = apiai("22183c0b83c340f1ae96c2eebf3f8160");
+
+    if(data.message.includes('@pineanas')) {
+      data.message = data.message.toLowerCase().replace(/@pineanas/g, "");
+    }
+
+    var requestAi = appai.textRequest(data.message, {
+      sessionId: data.room
+    });
+
+    requestAi.on('response', function (response) {
+      var respmsg = "@" + data.username + " " + response.result.fulfillment.speech;
+      var respUsername = "Pineanas"
+      io.in(data.room).emit('new from bot', {
+        username: respUsername,
+        message: respmsg,
+        timestamp: Date.now()
+      });
+    });
+
+    requestAi.on('error', function (error) {
+      console.log(error);
+      socket.broadcast.to(data.room).emit('new from bot', {
+        username: 'PineAnas',
+        message: 'Im sleeping, try later',
+        longitude: null,
+        latitude: null,
+        image: null,
+        timestamp: Date.now()
+      });
+    });
+
+    requestAi.end();
+  }
 
   socket.on('request keys', function () {
     console.log('https://graph.facebook.com/oauth/access_token?client_id=' + id + '&client_secret=' + sevret + '&grant_type=client_credentials');
@@ -101,6 +148,16 @@ io.on('connection', function (socket) {
     var numberOfUsers = io.sockets.adapter.rooms[room].length;
     console.log(socket.username + " has Connected to room " + room + "! " + numberOfUsers + " users online here now");
 
+    if(numberOfUsers === 1 ) {
+      io.in(socket.room).emit('new from bot', {
+        username: 'Pineanas',
+        message: 'Hi there @' + username + ", looks like we are alone here.",
+        timestamp: Date.now()
+      });
+    }
+
+
+
     // var c = io.sockets.adapter.rooms[room].sockets;
 
     io.to(room).emit('user count', {
@@ -109,8 +166,8 @@ io.on('connection', function (socket) {
 
     // socket.emit('events keys', s3);
   });
-  
-  socket.on('total count', function() {
+
+  socket.on('total count', function () {
     socket.emit('total counts', {
       count: numUsers,
       cities: arrayOfRooms.length
@@ -139,6 +196,14 @@ io.on('connection', function (socket) {
       io.to(socket.room).emit('user count', {
         numbers: usersInRoom
       });
+
+      if(usersInRoom === 1 ) {
+        io.in(socket.room).emit('new from bot', {
+          username: 'Pineanas',
+          message: 'Looks like we are alone now',
+          timestamp: Date.now()
+        });
+      }
 
       if (usersInRoom === 0) {
         arrayOfRooms.splice(arrayOfRooms.indexOf(socket.room, 1));
