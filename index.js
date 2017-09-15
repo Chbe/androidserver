@@ -148,6 +148,12 @@ io.on('connection', function (socket) {
     var numberOfUsers = io.sockets.adapter.rooms[room].length;
     console.log(socket.username + " has Connected to room " + room + "! " + numberOfUsers + " users online here now");
 
+    socket.emit('new from bot', {
+      username: 'Pineanas',
+      message: 'Welcome to PineChat @' + username + '! If you want to talk to me, tag me in your message with "@pineanas"',
+      timestamp: Date.now()
+    });
+
     if(numberOfUsers === 1 ) {
       io.in(socket.room).emit('new from bot', {
         username: 'Pineanas',
