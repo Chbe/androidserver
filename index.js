@@ -157,7 +157,7 @@ io.on('connection', function (socket) {
     if(numberOfUsers === 1 ) {
       io.in(socket.room).emit('new from bot', {
         username: 'Pineanas',
-        message: 'Hi there @' + username + ', looks like we are alone here. Good thing is that u dont have to type "@pineanas" to talk to me now.',
+        message: 'Hi there @' + username + ', looks like we are alone here. Good thing is that u dont have to type "@pineanas" to talk to me now, since its only u and me here..',
         timestamp: Date.now()
       });
     }
