@@ -99,6 +99,9 @@ io.on('connection', function (socket) {
 
   socket.on('new message to bot', function (data) {
     botAI(data);
+    if (data.image) {
+      saveToDB(data, socket);
+    }
   });
 
   function saveToDB(data, socket) {
