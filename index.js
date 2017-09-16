@@ -17,7 +17,7 @@ var allowCrossDomain = function (req, res, next) {
   }
 };
 
-
+var cors = require('cors');
 var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
@@ -39,7 +39,7 @@ var sevret = process.env.FACEBOOK_SECRET;
 
 
 
-
+app.use(cors());
 app.use(express.static(__dirname + '/public'));
 app.use(allowCrossDomain);
 
