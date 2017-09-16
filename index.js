@@ -27,6 +27,7 @@ var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var port = process.env.PORT || 3000;
+var mongoose = require('mongoose');
 
 
 
@@ -39,6 +40,10 @@ var port = process.env.PORT || 3000;
 
 var id = process.env.FACEBOOK_ID;
 var sevret = process.env.FACEBOOK_SECRET;
+
+var numUsers = 0;
+var usernames = {};
+var arrayOfRooms = [];
 
 
 
@@ -54,16 +59,33 @@ server.listen(port, function () {
   console.log('Server listening at port %d', port);
 });
 
-var numUsers = 0;
-var usernames = {};
-var arrayOfRooms = [];
+mongoose.connect('mongodb://generic:generic@ds038547.mlab.com:38547/pinechat', function (err) {
+  if (err) {
+    console.log("db error", err);
+  }
 
+  else {
+    console.log("db connected");
+  }
+});
 
+var chatSchema = mongoose.Schema({
+  Date: { type: Date, default: Date.now() },
+  room: String,
+  username: String,
+  base64: String
+});
+
+var Chat = mongoose.model('Picture', chatSchema);
 
 io.on('connection', function (socket) {
   var addedUser = false;
 
   socket.on('new message', function (data) {
+
+    if (data.image) {
+      saveToDB(data, socket);
+    }
 
     socket.broadcast.to(data.room).emit('new message', {
       username: socket.username,
@@ -79,11 +101,23 @@ io.on('connection', function (socket) {
     botAI(data);
   });
 
+  function saveToDB(data, socket) {
+    var newPic = new Chat({ room: data.room, username: socket.username, base64: data.image });
+    newPic.save(function (err) {
+      if (err) {
+        console.log("DB not save", err);
+      }
+      else {
+        console.log("New picture saved");
+      }
+    });
+  }
+
   function botAI(data) {
     var apiai = require('apiai');
     var appai = apiai("22183c0b83c340f1ae96c2eebf3f8160");
 
-    if(data.message.includes('@pineanas')) {
+    if (data.message.includes('@pineanas')) {
       data.message = data.message.toLowerCase().replace(/@pineanas/g, "");
     }
 
@@ -162,7 +196,7 @@ io.on('connection', function (socket) {
       timestamp: Date.now()
     });
 
-    if(numberOfUsers === 1 ) {
+    if (numberOfUsers === 1) {
       io.in(socket.room).emit('new from bot', {
         username: 'Pineanas',
         message: 'Hi there @' + username + ', looks like we are alone here. Good thing is that u dont have to type "@pineanas" to talk to me now, since its only u and me here..',
@@ -211,7 +245,7 @@ io.on('connection', function (socket) {
         numbers: usersInRoom
       });
 
-      if(usersInRoom === 1 ) {
+      if (usersInRoom === 1) {
         io.in(socket.room).emit('new from bot', {
           username: 'Pineanas',
           message: 'Looks like we are alone now',
