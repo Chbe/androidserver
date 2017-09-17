@@ -1,6 +1,6 @@
 var allowCrossDomain = function (req, res, next) {
   res.header('Access-Control-Allow-Credentials', 'true');
-  res.header('Access-Control-Allow-Origin', request.get('origin'));
+  // res.header('Access-Control-Allow-Origin', request.get('origin'));
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
   res.header('Access-Control-Allow-Origin', 'http://localhost:*');
@@ -220,7 +220,7 @@ io.on('connection', function (socket) {
 
     DBTable = room;
 
-    var Chat = mongoose.model(DBTable, chatSchema);    
+    var Chat = mongoose.model(DBTable, chatSchema);
 
     var query = Chat.find({});
 
@@ -237,21 +237,11 @@ io.on('connection', function (socket) {
       numbers: numberOfUsers
     });
 
-    // socket.emit('events keys', s3);
-  });
-
-  socket.on('total count', function () {
-    socket.emit('total counts', {
+    io.emit('total counts', {
       count: numUsers,
       cities: arrayOfRooms.length
     });
   });
-
-  // socket.on('stop typing', function() {
-  //   socket.broadcast.emit('stop typing', {
-  //     username: socket.username
-  //   });
-  // });
 
   socket.on('disconnect', function () {
     if (addedUser) {

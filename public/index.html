@@ -7,28 +7,22 @@
 
 </head>
 
-<body onload="myFunction()" bgcolor="#000000">
+<body bgcolor="#000000">
 
   <h1 id="myId" align="center" style="
-      position: relative;
-      margin: 0;
-      color: white;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      margin-right: -50%;
-      transform: translate(-50%, -50%);"></h1>
+  position: relative;
+  margin: 0;
+  color: white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);"></h1>
 
-  <script>
-    function myFunction() {
-      var socket = io();
-      socket.emit('total count');
-      socket.on('total counts', (data) => {
-        document.getElementById("myId").innerHTML = data.count + ' people online in ' + data.cities + ' cities';
-      });
-    }
-  </script>
+
+  <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
+  <script src="/main.js"></script>
 </body>
 
 </html>
