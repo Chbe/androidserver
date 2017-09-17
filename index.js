@@ -253,7 +253,7 @@ io.on('connection', function (socket) {
 
   socket.on('disconnect', function () {
     if (addedUser) {
-      numUsers--;
+      --numUsers;
       delete usernames[socket.username];
       io.to(socket.room).emit('updateusers', usernames);
 
@@ -288,6 +288,11 @@ io.on('connection', function (socket) {
         arrayOfRooms.splice(arrayOfRooms.indexOf(socket.room, 1));
         console.log("That was the last user in that room so now its deleted", arrayOfRooms);
       }
+
+      io.emit('total counts', {
+        count: numUsers,
+        cities: arrayOfRooms.length
+      });
     }
   });
 });
