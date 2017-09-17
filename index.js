@@ -8,6 +8,7 @@ var allowCrossDomain = function (req, res, next) {
   res.header('Access-Control-Allow-Origin', 'https://androidserverapp.herokuapp.com/socket.io/*');
   res.header('Access-Control-Allow-Origin', 'https://androidserverapp.herokuapp.com/socket.io/*/*');
   res.header('Access-Control-Allow-Origin', 'http://pinechat.azurewebsites.net');
+  res.header('Access-Control-Allow-Origin', 'mongodb://generic:generic@ds038547.mlab.com:38547/pinechat');
   // res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
 
