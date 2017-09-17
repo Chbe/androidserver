@@ -244,6 +244,13 @@ io.on('connection', function (socket) {
     });
   });
 
+  socket.on('request total count', function () {
+    io.emit('total counts', {
+      count: numUsers,
+      cities: arrayOfRooms.length
+    });
+  })
+
   socket.on('disconnect', function () {
     if (addedUser) {
       --numUsers;
