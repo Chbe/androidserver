@@ -196,26 +196,29 @@ io.on('connection', function (socket) {
     var numberOfUsers = io.sockets.adapter.rooms[room].length;
     console.log(socket.username + " has Connected to room " + room + "! " + numberOfUsers + " users online here now");
 
+
+
+    if (numberOfUsers === 1) {
+      io.in(socket.room).emit('new from bot', {
+        username: 'Pineanas',
+        message: 'Welcome to PineChat @' + username + '! It looks like its only you and me here. If anyone more joins the chat you can talk to me by tagging me in your messages with "@pineanas", but for now Im all yours <3.',
+        timestamp: Date.now()
+      });
+    }
+    else {
+      socket.emit('new from bot', {
+        username: 'Pineanas',
+        message: 'Welcome to PineChat @' + username + '! You can talk to me by tagging me in your messages with "@pineanas".',
+        timestamp: Date.now()
+      });
+    }
+
     var query = Chat.find({});
 
     query.sort('-timestamp').limit(15).exec(function (err, docs) {
       if (err) throw err;
       socket.emit('old msgs', docs);
     });
-
-    socket.emit('new from bot', {
-      username: 'Pineanas',
-      message: 'Welcome to PineChat @' + username + '! If you want to talk to me, tag me in your message with "@pineanas"',
-      timestamp: Date.now()
-    });
-
-    if (numberOfUsers === 1) {
-      io.in(socket.room).emit('new from bot', {
-        username: 'Pineanas',
-        message: 'Hi there @' + username + ', looks like we are alone here. Good thing is that u dont have to type "@pineanas" to talk to me now, since its only u and me here..',
-        timestamp: Date.now()
-      });
-    }
 
 
 
