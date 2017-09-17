@@ -70,22 +70,22 @@ mongoose.connect('mongodb://generic:generic@ds038547.mlab.com:38547/pinechat', f
 });
 
 var chatSchema = mongoose.Schema({
-  Date: { type: Date, default: Date.now() },
+  timestamp: { type: Date, default: Date.now() },
   room: String,
   username: String,
-  base64: String
+  message: String,
+  longitude: Number,
+  latitude: Number,
+  image: String
 });
 
-var Chat = mongoose.model('Picture', chatSchema);
+var Chat = mongoose.model('ChatMessage', chatSchema);
 
 io.on('connection', function (socket) {
   var addedUser = false;
 
   socket.on('new message', function (data) {
-
-    if (data.image) {
-      saveToDB(data, socket);
-    }
+    saveToDB(data, socket);
 
     socket.broadcast.to(data.room).emit('new message', {
       username: socket.username,
@@ -99,20 +99,23 @@ io.on('connection', function (socket) {
 
   socket.on('new message to bot', function (data) {
     botAI(data);
-    if (data.image) {
+    if (!data.message.toLowerCase().includes('@pineanas')) {
+      console.log("sparats i nr två");
       saveToDB(data, socket);
     }
   });
 
   function saveToDB(data, socket) {
-    var newPic = new Chat({ room: data.room, username: socket.username, base64: data.image });
-    newPic.save(function (err) {
-      if (err) {
-        console.log("DB not save", err);
-      }
-      else {
-        console.log("New picture saved");
-      }
+    var newChat = new Chat({
+      room: socket.room,
+      username: socket.username,
+      message: data.message,
+      longitude: data.longitude,
+      latitude: data.latitude,
+      image: data.image
+    });
+    newChat.save(function (err) {
+      if (err) throw err;
     });
   }
 
@@ -193,6 +196,13 @@ io.on('connection', function (socket) {
     var numberOfUsers = io.sockets.adapter.rooms[room].length;
     console.log(socket.username + " has Connected to room " + room + "! " + numberOfUsers + " users online here now");
 
+    var query = Chat.find({});
+
+    query.sort('-timestamp').limit(15).exec(function (err, docs) {
+      if (err) throw err;
+      socket.emit('old msgs', docs);
+    });
+
     socket.emit('new from bot', {
       username: 'Pineanas',
       message: 'Welcome to PineChat @' + username + '! If you want to talk to me, tag me in your message with "@pineanas"',
@@ -237,16 +247,24 @@ io.on('connection', function (socket) {
       delete usernames[socket.username];
       io.to(socket.room).emit('updateusers', usernames);
 
-      var usersInRoom = io.sockets.adapter.rooms[socket.room].length;
-      socket.broadcast.to(socket.room).emit('user count', {
-        numUsers: usersInRoom
-      });
+      var usersInRoom = io.sockets.adapter.rooms[socket.room];
 
-      console.log(socket.username + ' has disconnected from room ' + socket.room + '! ' + usersInRoom + " users online here now");
+      if (usersInRoom) {
+        usersInRoom = io.sockets.adapter.rooms[socket.room].length;
+        socket.broadcast.to(socket.room).emit('user count', {
+          numUsers: usersInRoom
+        });
 
-      io.to(socket.room).emit('user count', {
-        numbers: usersInRoom
-      });
+        console.log(socket.username + ' has disconnected from room ' + socket.room + '! ' + usersInRoom + " users online here now");
+
+        io.to(socket.room).emit('user count', {
+          numbers: usersInRoom
+        });
+      }
+
+      else {
+        usersInRoom = 0;
+      }
 
       if (usersInRoom === 1) {
         io.in(socket.room).emit('new from bot', {
