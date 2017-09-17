@@ -79,7 +79,9 @@ var chatSchema = mongoose.Schema({
   image: String
 });
 
-var Chat = mongoose.model('ChatMessage', chatSchema);
+var DBTable;
+
+
 
 io.on('connection', function (socket) {
   var addedUser = false;
@@ -106,6 +108,8 @@ io.on('connection', function (socket) {
   });
 
   function saveToDB(data, socket) {
+    DBTable = socket.room;
+    var Chat = mongoose.model(DBTable, chatSchema);
     var newChat = new Chat({
       room: socket.room,
       username: socket.username,
@@ -212,6 +216,10 @@ io.on('connection', function (socket) {
         timestamp: Date.now()
       });
     }
+
+    DBTable = room;
+
+    var Chat = mongoose.model(DBTable, chatSchema);    
 
     var query = Chat.find({});
 
