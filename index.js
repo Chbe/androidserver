@@ -71,7 +71,7 @@ mongoose.connect('mongodb://generic:generic@ds038547.mlab.com:38547/pinechat', f
 });
 
 var chatSchema = mongoose.Schema({
-  timestamp: { type: Date, default: Date.now() },
+  timestamp: Date,
   room: String,
   username: String,
   message: String,
@@ -112,6 +112,7 @@ io.on('connection', function (socket) {
     DBTable = socket.room;
     var Chat = mongoose.model(DBTable, chatSchema);
     var newChat = new Chat({
+      timestamp: Date.now(),
       room: socket.room,
       username: socket.username,
       message: data.message,
