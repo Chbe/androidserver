@@ -253,7 +253,7 @@ io.on('connection', function (socket) {
 
   socket.on('disconnect', function () {
     if (addedUser) {
-      --numUsers;
+      numUsers--;
       delete usernames[socket.username];
       io.to(socket.room).emit('updateusers', usernames);
 
